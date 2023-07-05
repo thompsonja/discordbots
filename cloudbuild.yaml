@@ -1,0 +1,47 @@
+steps:
+# Run tests and save to file
+- name: golang:1.19
+  entrypoint: /bin/bash
+  args: 
+  - -c
+  - |
+    cd "${_APP}"
+    go install github.com/jstemmer/go-junit-report/v2@latest
+    2>&1 go test -timeout 1m -v ./... | /go/bin/go-junit-report -set-exit-code -iocopy -out ${_APP}_${SHORT_SHA}_test_log.xml
+
+# Docker Build
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build',
+         '--build-arg', 'FOLDER=${_APP}',
+         '--build-arg', 'VERSION=${SHORT_SHA}',
+         '-t', '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:$SHORT_SHA',
+         '.']
+
+# Docker Tag
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['tag',
+         '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:$SHORT_SHA',
+         '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:latest']
+
+# Docker push to Google Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:$SHORT_SHA']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:latest']
+
+# Deploy to Cloud Run
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      gcloud run deploy "${_APP}" \
+        --image="${_ZONE}-docker.pkg.dev/${PROJECT_ID}/services/${_APP}:latest" \
+        --region=${_ZONE} --platform="managed"
+
+# Save test logs to Google Cloud Storage
+artifacts:
+  objects:
+    location: gs://${PROJECT_ID}_cloudbuild/logs
+    paths:
+      - ${_APP}/${_APP}_${SHORT_SHA}_test_log.xml
