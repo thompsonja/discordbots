@@ -1,7 +1,11 @@
-# Build with:
-FROM golang:1.19-buster as builder
+FROM golang:1.20-buster as builder
 WORKDIR /app
 
+# These args will be automatically injected by Cloud Build based on
+# cloudbuild.yaml.
+# Args:
+#   FOLDER: The folder containing the bot's source code, i.e. 'dalle'.
+#   VERSION: The version of the bot, from git.
 ARG FOLDER
 ARG VERSION
 
@@ -13,10 +17,10 @@ RUN apt-get update -y && apt-get install -y git
 COPY ${FOLDER}/go.* ./
 RUN go mod download
 
-# Build the server.
+# Build the server, using the VERSION build arg to set the bot's version.
 COPY ${FOLDER} ./
 RUN go build \
-  -ldflags "-X github.com/thompsonja/discord_bots_common/pkg/version.Version=${VERSION}" \
+  -ldflags "-X github.com/thompsonja/discord_bots_lib/pkg/version.Version=${VERSION}" \
   -v -o server
 
 # Use a multi stage build using the debian slim image.

@@ -1,6 +1,6 @@
 steps:
 # Run tests and save to file
-- name: golang:1.19
+- name: golang:1.20
   entrypoint: /bin/bash
   args: 
   - -c
@@ -14,20 +14,12 @@ steps:
   args: ['build',
          '--build-arg', 'FOLDER=${_APP}',
          '--build-arg', 'VERSION=${SHORT_SHA}',
-         '-t', '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:$SHORT_SHA',
+         '-t', '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:${SHORT_SHA}',
          '.']
-
-# Docker Tag
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['tag',
-         '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:$SHORT_SHA',
-         '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:latest']
 
 # Docker push to Google Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:$SHORT_SHA']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:latest']
+  args: ['push', '${_ZONE}-docker.pkg.dev/$PROJECT_ID/services/${_APP}:${SHORT_SHA}']
 
 # Deploy to Cloud Run
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -36,7 +28,7 @@ steps:
     - '-c'
     - |
       gcloud run deploy "${_APP}" \
-        --image="${_ZONE}-docker.pkg.dev/${PROJECT_ID}/services/${_APP}:latest" \
+        --image="${_ZONE}-docker.pkg.dev/${PROJECT_ID}/services/${_APP}:${SHORT_SHA}" \
         --region=${_ZONE} --platform="managed"
 
 # Save test logs to Google Cloud Storage
