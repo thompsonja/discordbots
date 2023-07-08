@@ -62,8 +62,8 @@ github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpE
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
-github.com/thompsonja/discord_bots_lib v0.1.1 h1:jCHYAB/vWT826Fg1/RbKrBGKMByBpGYZjkUeApMh3js=
-github.com/thompsonja/discord_bots_lib v0.1.1/go.mod h1:zwxnGVn5GqxJZ1C8dNx/s0gyAaC/L/McSgW8+SnU0Vw=
+github.com/thompsonja/discord_bots_lib v0.1.2 h1:/9H+Zyqi/UcxYKf3bjJbFzjqebjYlZAKQ39FI/RCSbw=
+github.com/thompsonja/discord_bots_lib v0.1.2/go.mod h1:zwxnGVn5GqxJZ1C8dNx/s0gyAaC/L/McSgW8+SnU0Vw=
 github.com/thompsonja/openai-go v0.2.0 h1:aQxZZGp/smwp+aL0zMGi01j0NOfMrOxbkt5h5suvMP4=
 github.com/thompsonja/openai-go v0.2.0/go.mod h1:HLJSo01Sly0z5b2qlTpNDxlKvAv20AMxTJR4epJZ3/8=
 go.opencensus.io v0.24.0 h1:y73uSU6J157QMP2kn2r30vwW1A2W2WFwSCGnAVxeaD0=
