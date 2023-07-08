@@ -12,7 +12,7 @@ import (
 	"github.com/thompsonja/discordbots/dalle/bot"
 )
 
-// from https://discord.com/developers/applications/1096915795826712636/information
+// from https://discord.com/developers/applications/<app_id>/information
 const (
 	appID     = "1096915795826712636"
 	publicKey = "a5b67d4ad09f4df5623212b62fe8eefbb9c2c0758885d3d95d16ab312a3062bd"
@@ -32,6 +32,7 @@ func main() {
 
 	flag.Parse()
 
+	// Get project ID from your gcloud config if not passed in as a flag.
 	if *gcpProjectID == "" {
 		cmd := exec.Command("gcloud", "config", "get-value", "project")
 		stdoutStderr, err := cmd.CombinedOutput()
@@ -41,13 +42,19 @@ func main() {
 		*gcpProjectID = strings.TrimSpace(string(stdoutStderr))
 	}
 
+	// Instantiate a bot.
 	b := bot.New(*gcpProjectID, *openaiApiSecret)
 
+	// Map Discord Application Commands to bot functions.
 	fns := map[string]webhooks.WebhookFunc{
+		"debug":    b.Debug,
 		"version":  b.Version,
 		"generate": b.Generate,
 	}
 
+	// Create a new webhook client.
+	// SecretKey is the name of the GCP Secret that was automatically created by
+	// the terraform configs and manually populated.
 	c, err := webhooks.NewClient(webhooks.ClientConfig{
 		AppID:     appID,
 		Commands:  bot.Commands,
@@ -61,6 +68,7 @@ func main() {
 		log.Fatalf("discord.NewClient: %v", err)
 	}
 
+	// Run the bot, destroying and updating commands if desired.
 	if err := c.Run(*destroyCommands, *updateCommands); err != nil {
 		log.Fatalf("c.Run: %v", err)
 	}
