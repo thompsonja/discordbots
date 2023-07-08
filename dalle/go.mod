@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/bwmarrin/discordgo v0.26.1
-	github.com/thompsonja/discord_bots_lib v0.1.1
+	github.com/thompsonja/discord_bots_lib v0.1.2
 	github.com/thompsonja/openai-go v0.2.0
 )
 
