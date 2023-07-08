@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/ed25519"
 	"encoding/hex"
 	"flag"
@@ -8,7 +9,9 @@ import (
 	"os/exec"
 	"strings"
 
+	"cloud.google.com/go/logging"
 	"github.com/thompsonja/discord_bots_lib/pkg/discord/webhooks"
+	"github.com/thompsonja/discord_bots_lib/pkg/gcp/logger"
 	"github.com/thompsonja/discordbots/dalle/bot"
 )
 
@@ -52,6 +55,13 @@ func main() {
 		"generate": b.Generate,
 	}
 
+	// Create a GCP logging client
+	client, err := logging.NewClient(context.Background(), *gcpProjectID)
+	if err != nil {
+		log.Fatalf("Failed to create client: %v", err)
+	}
+	defer client.Close()
+
 	// Create a new webhook client.
 	// SecretKey is the name of the GCP Secret that was automatically created by
 	// the terraform configs and manually populated.
@@ -63,6 +73,7 @@ func main() {
 		Fns:       fns,
 		ProjectID: *gcpProjectID,
 		SecretKey: "dalle-key",
+		Logger:    logger.New(client, "dalle"),
 	})
 	if err != nil {
 		log.Fatalf("discord.NewClient: %v", err)
