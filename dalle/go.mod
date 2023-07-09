@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/logging v1.6.1
 	github.com/bwmarrin/discordgo v0.26.1
 	github.com/thompsonja/discord_bots_lib v0.2.1
-	github.com/thompsonja/openai-go v0.2.0
+	github.com/thompsonja/openai-go v0.3.0
 )
 
 require (

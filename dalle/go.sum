@@ -68,8 +68,8 @@ github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/thompsonja/discord_bots_lib v0.2.1 h1:8s6/iM/ZV697iz1bT80k58PYGCCI6GdSn4jpq94T+Jg=
 github.com/thompsonja/discord_bots_lib v0.2.1/go.mod h1:zwxnGVn5GqxJZ1C8dNx/s0gyAaC/L/McSgW8+SnU0Vw=
-github.com/thompsonja/openai-go v0.2.0 h1:aQxZZGp/smwp+aL0zMGi01j0NOfMrOxbkt5h5suvMP4=
-github.com/thompsonja/openai-go v0.2.0/go.mod h1:HLJSo01Sly0z5b2qlTpNDxlKvAv20AMxTJR4epJZ3/8=
+github.com/thompsonja/openai-go v0.3.0 h1:esn8sFAJhidgBTfZhctdgmeFgc3Z6Q3I5AQtGjJGmcI=
+github.com/thompsonja/openai-go v0.3.0/go.mod h1:HLJSo01Sly0z5b2qlTpNDxlKvAv20AMxTJR4epJZ3/8=
 go.opencensus.io v0.24.0 h1:y73uSU6J157QMP2kn2r30vwW1A2W2WFwSCGnAVxeaD0=
 go.opencensus.io v0.24.0/go.mod h1:vNK8G9p7aAivkbmorf4v+7Hgx+Zs0yY+0fOtgBfjQKo=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=

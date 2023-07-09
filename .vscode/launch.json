@@ -10,7 +10,7 @@
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceFolder}/dalle",
-            "args": []
+            "args": ["--local"]
         },
         {
             "name": "Update Dalle Commands",
@@ -18,7 +18,7 @@
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceFolder}/dalle",
-            "args": ["--update"]
+            "args": ["--local", "--update"]
         },
         {
             "name": "Destroy Dalle Commands",
@@ -26,7 +26,7 @@
             "request": "launch",
             "mode": "debug",
             "program": "${workspaceFolder}/dalle",
-            "args": ["--destroy"]
+            "args": ["--local", "--destroy"]
         }
     ]
 }
