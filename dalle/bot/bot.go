@@ -94,9 +94,10 @@ func (b *Bot) Generate(c *webhooks.Client, i *discordgo.Interaction, r *http.Req
 
 	// Send the prompt to the OpenAI API
 	data, err := b.openaiClient.Image.Create(context.Background(), &image.CreateRequest{
-		Prompt: imagePrompt,
-		Size:   "large",
-		N:      1,
+		Prompt:         imagePrompt,
+		Size:           "large",
+		N:              1,
+		ResponseFormat: "b64_json",
 	})
 	if err != nil {
 		return c.SendStringResponse(i, fmt.Sprintf("Failed to create image: %v", err))
