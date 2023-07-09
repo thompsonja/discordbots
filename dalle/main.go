@@ -73,7 +73,7 @@ func main() {
 		Fns:       fns,
 		ProjectID: *gcpProjectID,
 		SecretKey: "dalle-key",
-		Logger:    logger.New(client, "dalle"),
+		Logger:    logger.New(client, "dalle-logs"),
 	})
 	if err != nil {
 		log.Fatalf("discord.NewClient: %v", err)
