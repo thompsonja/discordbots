@@ -11,7 +11,8 @@ import (
 
 	"cloud.google.com/go/logging"
 	"github.com/thompsonja/discord_bots_lib/pkg/discord/webhooks"
-	"github.com/thompsonja/discord_bots_lib/pkg/gcp/logger"
+	gcplogger "github.com/thompsonja/discord_bots_lib/pkg/gcp/logger"
+	"github.com/thompsonja/discord_bots_lib/pkg/logger"
 	"github.com/thompsonja/discordbots/dalle/bot"
 )
 
@@ -29,6 +30,7 @@ var (
 func main() {
 	var gcpProjectID = flag.String("project_id", "", "GCP Project ID")
 	var port = flag.Int("port", 8080, "server port")
+	var local = flag.Bool("local", false, "Run locally")
 	var updateCommands = flag.Bool("update", false, "Update commands")
 	var destroyCommands = flag.Bool("destroy", false, "Destroy commands")
 	var openaiApiSecret = flag.String("openai_api_secret", "openai-api-secret", "GCP secret with openai-api key")
@@ -55,12 +57,18 @@ func main() {
 		"generate": b.Generate,
 	}
 
-	// Create a GCP logging client
-	client, err := logging.NewClient(context.Background(), *gcpProjectID)
-	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
+	var l logger.Logger
+	if *local {
+		l = &logger.StandardLogger{}
+	} else {
+		// Create a GCP logging client
+		client, err := logging.NewClient(context.Background(), *gcpProjectID)
+		if err != nil {
+			log.Fatalf("Failed to create client: %v", err)
+		}
+		defer client.Close()
+		l = gcplogger.New(client, "dalle-logs")
 	}
-	defer client.Close()
 
 	// Create a new webhook client.
 	// SecretKey is the name of the GCP Secret that was automatically created by
@@ -73,7 +81,7 @@ func main() {
 		Fns:       fns,
 		ProjectID: *gcpProjectID,
 		SecretKey: "dalle-key",
-		Logger:    logger.New(client, "dalle-logs"),
+		Logger:    l,
 	})
 	if err != nil {
 		log.Fatalf("discord.NewClient: %v", err)
